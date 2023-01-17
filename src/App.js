@@ -1,20 +1,32 @@
 import React, { useState, useEffect } from "react";
-import FriendRequestTest from "./FriendRequestTest";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './App.css';
+
+function FriendRequestTest({ request, onAccept, onDecline }) {
+  return (
+    <div className="friend-request">
+      <img src={request.picture.data.url} alt={request.name} width={50} height={50} />
+      <p>{request.name}</p>
+      <button className="btn btn-success" style={{ marginRight: '10px' }} onClick={() => onAccept(request)}>Accept</button>
+      <button class="btn btn-danger" onClick={() => onDecline(request)}>Decline</button>
+    </div>
+  );
+}
 
 function App() {
-  const [friendRequests, setFriendRequests] = useState([
-    { id: 1, name: "Yosr Trabelsi", },
-    { id: 2, name: "Ines Yotto" },
-    { id: 3, name: "Thomas Hoareau" },
-    { id: 4, name: "Sinthy" },
-    { id: 5, name: "Mouhcine Ergui" },
+  const [friendRequestsData, setFriendRequestsData] = useState([
+    { id: 1, name: "Yosr Trabelsi", picture: {data: {url: "https://randomuser.me/api/portraits/med/women/1.jpg"}} },
+    { id: 2, name: "Ines Yotto", picture: {data: {url: "https://randomuser.me/api/portraits/med/women/2.jpg"}} },
+    { id: 3, name: "Thomas Hoareau", picture: {data: {url: "https://randomuser.me/api/portraits/med/men/1.jpg"}} },
+    { id: 4, name: "Sinthy", picture: {data: {url: "https://randomuser.me/api/portraits/med/men/2.jpg"}} },
+    { id: 5, name: "Mohcine Ergui", picture: {data: {url: "https://randomuser.me/api/portraits/med/men/3.jpg"}} },
   ]);
 
-  function handleAccept(request) {
+  const handleAccept = (request) => {
     try {
       alert(`Accepted request from ${request.name}`);
       
-      setFriendRequests(friendRequests.filter(r => r.id !== request.id));
+      setFriendRequestsData(friendRequestsData.filter(r => r.id !== request.id));
     } catch (error) {
       console.error(error);
       
@@ -22,11 +34,11 @@ function App() {
     }
   }
 
-  function handleDecline(request) {
+  const handleDecline = (request) => {
     try {
       alert(`Declined request from ${request.name}`);
        
-      setFriendRequests(friendRequests.filter(r => r.id !== request.id));
+      setFriendRequestsData (friendRequestsData.filter(r => r.id !== request.id));
     } catch (error) {
       console.error(error);
       
@@ -35,8 +47,8 @@ function App() {
   }
 
   return (
-    <div>
-      {friendRequests.map((request) => (
+    <div className="container">
+      {friendRequestsData.map((request) => (
         <FriendRequestTest
           key={request.id}
           request={request}
